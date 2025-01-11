@@ -272,6 +272,9 @@ MonoBehaviour:
   groundTile: {fileID: 2375347280344296970, guid: 7dc27018bb1eb494592299838ff24e2f, type: 3}
   environmentTile:
   - {fileID: 6755062230040496561, guid: 13054aabf0ecd441586462deecfa28fc, type: 3}
+  - {fileID: 6755062230040496561, guid: 34fc9c9e5b30e432580f70b30025f997, type: 3}
+  - {fileID: 6755062230040496561, guid: bcc3affa8d6134d299584124de2a5ea2, type: 3}
+  - {fileID: 6755062230040496561, guid: 4f1d82a1f336249e6ba0fc4c787fc31d, type: 3}
 --- !u!4 &221350564
 Transform:
   m_ObjectHideFlags: 0
