@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public void IncreaseScore()
     {
         score++;
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Total Compensation: $" + score;
         Debug.Log(score);
     }
 
