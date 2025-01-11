@@ -1,0 +1,25 @@
+<svg width="88" height="88" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Level/Button/Locked/Hover">
+<g id="Level/Button/Unlocked">
+<g id="Fill" filter="url(#filter0_d_2_839)">
+<rect x="4" width="80" height="80" rx="6" fill="#2A2E37"/>
+<rect x="6" y="2" width="76" height="76" rx="4" stroke="#E52554" stroke-width="4"/>
+</g>
+</g>
+<g id="Icon/Locker">
+<path id="Locker" fill-rule="evenodd" clip-rule="evenodd" d="M49.5063 31.4269H37.4925V27.5906C37.4925 24.3298 40.2062 21.6444 43.5 21.6444C46.7925 21.6444 49.5063 24.3298 49.5063 27.5906V31.4269ZM43.5 48.6901C41.3675 48.6901 39.625 46.9637 39.625 44.8538C39.625 42.7439 41.3675 41.0175 43.5 41.0175C45.6312 41.0175 47.375 42.7439 47.375 44.8538C47.375 46.9637 45.6312 48.6901 43.5 48.6901ZM55.125 31.4269H53.1875V27.5906C53.1875 22.2199 48.925 18 43.5 18C38.0737 18 33.8125 22.2199 33.8125 27.5906V31.4269H31.875C29.7425 31.4269 28 33.1532 28 35.2632V54.4444C28 56.5544 29.7425 58.2807 31.875 58.2807H55.125C57.2562 58.2807 59 56.5544 59 54.4444V35.2632C59 33.1532 57.2562 31.4269 55.125 31.4269Z" fill="#F5F5F5"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_2_839" x="0" y="0" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_839"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_839" result="shape"/>
+</filter>
+</defs>
+</svg>

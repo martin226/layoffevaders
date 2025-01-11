@@ -1,0 +1,98 @@
+<svg width="547" height="383" viewBox="0 0 547 383" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Level_Preview">
+<g id="ColumnGroup">
+<g id="Title">
+<rect x="50" y="50" width="205" height="24" rx="4" fill="#FED70A"/>
+<text id="MessageText" fill="#212121" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="14" letter-spacing="0em"><tspan x="58" y="66.8535">Level/Button/Unlocked/Default</tspan></text>
+</g>
+<g id="Button/Unlocked/Hover">
+<g id="Fill" filter="url(#filter0_d_2_840)">
+<rect x="50" y="99" width="80" height="80" rx="6" fill="#2A2E37"/>
+</g>
+</g>
+<g id="Title_2">
+<rect x="50" y="204" width="198" height="24" rx="4" fill="#FED70A"/>
+<text id="MessageText_2" fill="#212121" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="14" letter-spacing="0em"><tspan x="58" y="220.854">Level/Button/Unlocked/Hover</tspan></text>
+</g>
+<g id="Button/Unlocked/Default">
+<g id="Fill_2" filter="url(#filter1_d_2_840)">
+<rect x="50" y="253" width="80" height="80" rx="6" fill="#2A2E37"/>
+<rect x="52" y="255" width="76" height="76" rx="4" stroke="#E52554" stroke-width="4"/>
+</g>
+</g>
+</g>
+<g id="ColumnGroup_2">
+<g id="Title_3">
+<rect x="305" y="50" width="192" height="24" rx="4" fill="#FED70A"/>
+<text id="MessageText_3" fill="#212121" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="14" letter-spacing="0em"><tspan x="313" y="66.8535">Level/Button/Locked/Default</tspan></text>
+</g>
+<g id="Button/Locked/Hover">
+<g id="Level/Button/Unlocked">
+<g id="Fill_3" filter="url(#filter2_d_2_840)">
+<rect x="305" y="99" width="80" height="80" rx="6" fill="#2A2E37"/>
+</g>
+</g>
+<g id="Icon/Locker">
+<path id="Locker" fill-rule="evenodd" clip-rule="evenodd" d="M350.506 130.427H338.492V126.591C338.492 123.33 341.206 120.644 344.5 120.644C347.792 120.644 350.506 123.33 350.506 126.591V130.427ZM344.5 147.69C342.367 147.69 340.625 145.964 340.625 143.854C340.625 141.744 342.367 140.018 344.5 140.018C346.631 140.018 348.375 141.744 348.375 143.854C348.375 145.964 346.631 147.69 344.5 147.69ZM356.125 130.427H354.187V126.591C354.187 121.22 349.925 117 344.5 117C339.074 117 334.812 121.22 334.812 126.591V130.427H332.875C330.742 130.427 329 132.153 329 134.263V153.444C329 155.554 330.742 157.281 332.875 157.281H356.125C358.256 157.281 360 155.554 360 153.444V134.263C360 132.153 358.256 130.427 356.125 130.427Z" fill="#F5F5F5"/>
+</g>
+</g>
+<g id="Title_4">
+<rect x="305" y="204" width="185" height="24" rx="4" fill="#FED70A"/>
+<text id="MessageText_4" fill="#212121" xml:space="preserve" style="white-space: pre" font-family="Arial" font-size="14" letter-spacing="0em"><tspan x="313" y="220.854">Level/Button/Locked/Hover</tspan></text>
+</g>
+<g id="Button/Locked/Default">
+<g id="Level/Button/Unlocked_2">
+<g id="Fill_4" filter="url(#filter3_d_2_840)">
+<rect x="305" y="253" width="80" height="80" rx="6" fill="#2A2E37"/>
+<rect x="307" y="255" width="76" height="76" rx="4" stroke="#E52554" stroke-width="4"/>
+</g>
+</g>
+<g id="Icon/Locker_2">
+<path id="Locker_2" fill-rule="evenodd" clip-rule="evenodd" d="M350.506 284.427H338.492V280.591C338.492 277.33 341.206 274.644 344.5 274.644C347.792 274.644 350.506 277.33 350.506 280.591V284.427ZM344.5 301.69C342.367 301.69 340.625 299.964 340.625 297.854C340.625 295.744 342.367 294.018 344.5 294.018C346.631 294.018 348.375 295.744 348.375 297.854C348.375 299.964 346.631 301.69 344.5 301.69ZM356.125 284.427H354.187V280.591C354.187 275.22 349.925 271 344.5 271C339.074 271 334.812 275.22 334.812 280.591V284.427H332.875C330.742 284.427 329 286.153 329 288.263V307.444C329 309.554 330.742 311.281 332.875 311.281H356.125C358.256 311.281 360 309.554 360 307.444V288.263C360 286.153 358.256 284.427 356.125 284.427Z" fill="#F5F5F5"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_2_840" x="46" y="99" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_840"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_840" result="shape"/>
+</filter>
+<filter id="filter1_d_2_840" x="46" y="253" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_840"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_840" result="shape"/>
+</filter>
+<filter id="filter2_d_2_840" x="301" y="99" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_840"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_840" result="shape"/>
+</filter>
+<filter id="filter3_d_2_840" x="301" y="253" width="88" height="88" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_840"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_840" result="shape"/>
+</filter>
+</defs>
+</svg>

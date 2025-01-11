@@ -1,0 +1,24 @@
+<svg width="608" height="248" viewBox="0 0 608 248" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Panel/Window/Medium">
+<g id="Panel/Body/Headed" filter="url(#filter0_d_2_915)">
+<path id="WindowContent" d="M4 80H604V224C604 232.837 596.837 240 588 240H20C11.1634 240 4 232.837 4 224V80Z" fill="#323741"/>
+</g>
+<g id="Panel/Header/Example">
+<g id="Panel/Header">
+<path id="Background" d="M4 16C4 7.16344 11.1634 0 20 0H588C596.837 0 604 7.16344 604 16V80H4V16Z" fill="#2A2E37"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_2_915" x="0" y="80" width="608" height="168" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_915"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_915" result="shape"/>
+</filter>
+</defs>
+</svg>
