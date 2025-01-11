@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     int score = 0;
     public static GameManager instance;
     public TextMeshProUGUI scoreText;
+    
 
     void Awake()
     {

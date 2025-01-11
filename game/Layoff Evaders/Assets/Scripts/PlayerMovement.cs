@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     int currentLane = 1;
     readonly float laneDistance = 4.0f;
     [SerializeField] GameObject playerAnim;
+    public GameObject gameOverUI;
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isGrounded|| isDead)
         {
-            return;
+            gameOverUI.SetActive(true);
         }
         audioManager.PlaySFX(audioManager.action);
         playerAnim.GetComponent<Animator>().SetBool("isRolling", true); // Play the roll animation
@@ -89,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isDead)
         {
-            return;
+            gameOverUI.SetActive(true);
         }
         Vector3 forwardMove = transform.forward * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + forwardMove);
@@ -121,10 +122,9 @@ public class PlayerMovement : MonoBehaviour
         isDead = true;
         playerAnim.GetComponent<Animator>().Play("Stumble Backwards");
         Debug.Log("Player died");
-        Invoke("Restart", 2);
     }
 
-    void Restart ()
+    public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
