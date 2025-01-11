@@ -36,14 +36,4 @@ public class LoadingScreenManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         m_LoadingScreenObject.SetActive(false);
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
