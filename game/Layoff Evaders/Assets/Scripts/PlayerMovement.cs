@@ -128,4 +128,13 @@ public class PlayerMovement : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    public void mainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("QUIT!");
+    }
 }
