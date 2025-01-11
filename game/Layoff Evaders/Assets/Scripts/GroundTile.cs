@@ -12,8 +12,6 @@ public class GroundTile : MonoBehaviour
     void Start()
     {
         groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
-        SpawnObstacle();
-        SpawnCoin();
     }
 
     void OnTriggerExit(Collider other)
@@ -22,7 +20,7 @@ public class GroundTile : MonoBehaviour
         Destroy(gameObject, 2);
     }
 
-    void SpawnObstacle()
+    public void SpawnObstacle()
     {
         int obstaclesToSpawn = Random.value < 0.2f ? 2 : 1;
         HashSet<int> usedIndices = new HashSet<int>();
@@ -61,7 +59,7 @@ public class GroundTile : MonoBehaviour
         }
     }
 
-    void SpawnCoin(int coinCount = 3)
+    public void SpawnCoin(int coinCount = 3)
     {
         if (coinCount <= 0)
         {

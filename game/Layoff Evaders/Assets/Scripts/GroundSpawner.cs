@@ -6,10 +6,27 @@ public class GroundSpawner : MonoBehaviour
     public GameObject[] environmentTile;
     Vector3 nextSpawnPoint = new Vector3(0,0,0);
 
-    public void SpawnTile()
+    public void SpawnTile(bool spawnObstacle = true, bool spawnCoin = true)
     {
         // Instantiate the main ground tile
         GameObject temp = Instantiate(groundTile, nextSpawnPoint, Quaternion.identity);
+
+        GroundTile groundTileScript = temp.GetComponent<GroundTile>();
+        if (groundTileScript == null)
+        {
+            Debug.LogError("GroundTile script not found on groundTile!");
+            return;
+        }
+
+        if (spawnObstacle)
+        {
+            groundTileScript.SpawnObstacle();
+        }
+
+        if (spawnCoin)
+        {
+            groundTileScript.SpawnCoin();
+        }
 
         // Access the child "Plane" to get its Renderer
         Transform planeTransform = environmentTile[0].transform.Find("Plane");
@@ -56,7 +73,11 @@ public class GroundSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 5; i++)
+        {
+            SpawnTile(spawnObstacle: false);
+        }
+        for (int i = 0; i < 20; i++)
         {
             SpawnTile();
         }
