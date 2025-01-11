@@ -1,8 +1,15 @@
 using UnityEngine;
+using UnityEngine.Android;
 
 public class Coin : MonoBehaviour
 {
     public float turnSpeed = 90f;
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     void OnTriggerEnter (Collider other)
     {
         if (other.gameObject.GetComponent<Obstacle>() != null)
@@ -15,6 +22,8 @@ public class Coin : MonoBehaviour
             return;
         }
 
+        // Play SFX
+        audioManager.PlaySFX(audioManager.collect);
         // Increase the score
         GameManager.instance.IncreaseScore();
 

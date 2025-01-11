@@ -8,39 +8,45 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded = true;
     public float speed = 5.0f;
     public Rigidbody rb;
-
+    AudioManager audioManager;
     int currentLane = 1;
     readonly float laneDistance = 4.0f;
     [SerializeField] GameObject playerAnim;
-
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     void SwitchLaneLeft()
     {
-        if (currentLane > 0)
+        if (currentLane > 0 & !isDead)
         {
             currentLane--;
             Vector3 newPos = transform.position;
             newPos.x = (currentLane - 1) * laneDistance;
+            audioManager.PlaySFX(audioManager.action);
             transform.position = newPos;
         }
     }
 
     void SwitchLaneRight()
     {
-        if (currentLane < 2)
+        if (currentLane < 2 & !isDead)
         {
             currentLane++;
             Vector3 newPos = transform.position;
             newPos.x = (currentLane - 1) * laneDistance;
+            audioManager.PlaySFX(audioManager.action);
             transform.position = newPos;
         }
     }
 
     void Jump()
     {
-        if (!isGrounded)
+        if (!isGrounded || isDead)
         {
             return;
         }
+        audioManager.PlaySFX(audioManager.action);
         playerAnim.GetComponent<Animator>().SetBool("isJumping", true); // Play the jump animation
         rb.AddForce(transform.up * 5, ForceMode.VelocityChange); // Jump
         isGrounded = false;
@@ -56,10 +62,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Roll()
     {
-        if (!isGrounded)
+        if (!isGrounded|| isDead)
         {
             return;
         }
+        audioManager.PlaySFX(audioManager.action);
         playerAnim.GetComponent<Animator>().SetBool("isRolling", true); // Play the roll animation
         CapsuleCollider col = GetComponent<CapsuleCollider>();
         col.center = new Vector3(0, 0, 0);
