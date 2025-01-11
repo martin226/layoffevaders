@@ -930,10 +930,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 4dac1c74-0e45-490a-8839-b618c4636385
+  cloudProjectId: dbfa5a4b-40c4-4d7f-adb1-2385411062fd
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Layoff Evaders - PC Version
+  projectName: Layoff Evaders
   organizationId: martinsit288
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
