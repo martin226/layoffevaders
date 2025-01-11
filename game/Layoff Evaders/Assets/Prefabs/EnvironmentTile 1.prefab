@@ -119,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6529265252617844585}
   m_Layer: 0
-  m_Name: EnvironmentTile 0
+  m_Name: EnvironmentTile 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

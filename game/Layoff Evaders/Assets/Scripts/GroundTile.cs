@@ -4,7 +4,8 @@ using UnityEngine;
 public class GroundTile : MonoBehaviour
 {
     GroundSpawner groundSpawner;
-    public GameObject obstaclePrefab;
+    public GameObject[] obstacleGroundPrefab;
+    public GameObject[] obstacleTopPrefab;
     public GameObject coinPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,11 +41,23 @@ public class GroundTile : MonoBehaviour
             Transform spawnPoint = transform.GetChild(obstacleSpawnIndex).transform;
             // 50% chance for y position of the obstacle to be 0.5
             // 50% chance for y position of the obstacle to be 3
-            float yPosition = Random.value < 0.5f ? 0.5f : 3f;
+            bool isObstacleOnTop = Random.value < 0.5f;
+            float yPosition = isObstacleOnTop ? 3 : 0.5f;
             spawnPoint.position = new Vector3(spawnPoint.position.x, yPosition, spawnPoint.position.z);
 
-            // Spawn the obstacle
-            Instantiate(obstaclePrefab, spawnPoint.position, Quaternion.identity, transform);
+            int randomIndex;
+            if (isObstacleOnTop)
+            {
+                randomIndex = Random.Range(0, obstacleTopPrefab.Length);
+                // Spawn the obstacle on top
+                Instantiate(obstacleTopPrefab[randomIndex], spawnPoint.position, Quaternion.identity, transform);
+            }
+            else
+            {
+                randomIndex = Random.Range(0, obstacleGroundPrefab.Length);
+                // Spawn the obstacle on the ground
+                Instantiate(obstacleGroundPrefab[randomIndex], spawnPoint.position, Quaternion.identity, transform);
+            }
         }
     }
 
