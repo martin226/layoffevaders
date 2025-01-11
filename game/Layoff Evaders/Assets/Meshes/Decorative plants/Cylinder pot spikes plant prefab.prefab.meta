@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: d1f0d1a7add2711488cf49debe3262c7
+labels:
+- Props
+- Environment
+- Plant
+- Decoration
+- Concrete
+- Interior
+- Nature
+- Spikes
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 13283
+  packageName: Decorative plants pack
+  packageVersion: 1.0
+  assetPath: Assets/Meshes/Decorative plants/Cylinder pot spikes plant prefab.prefab
+  uploadId: 223

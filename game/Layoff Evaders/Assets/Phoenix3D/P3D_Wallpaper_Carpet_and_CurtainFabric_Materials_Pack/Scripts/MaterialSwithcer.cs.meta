@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: be6933213f9b63f4cb35706a92febb9a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 264116
+  packageName: 'P3D: Indoor Design Starter Kit (High Quality Furniture)'
+  packageVersion: 1.0
+  assetPath: Assets/Phoenix3D/P3D_Wallpaper_Carpet_and_CurtainFabric_Materials_Pack/Scripts/MaterialSwithcer.cs
+  uploadId: 698848
