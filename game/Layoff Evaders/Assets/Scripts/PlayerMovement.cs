@@ -119,6 +119,7 @@ public class PlayerMovement : MonoBehaviour
     public void Die()
     {
         isDead = true;
+        playerAnim.GetComponent<Animator>().Play("Stumble Backwards");
         Debug.Log("Player died");
         Invoke("Restart", 2);
     }

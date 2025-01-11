@@ -270,6 +270,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundTile: {fileID: 2375347280344296970, guid: 7dc27018bb1eb494592299838ff24e2f, type: 3}
+  environmentTile:
+  - {fileID: 6755062230040496561, guid: 13054aabf0ecd441586462deecfa28fc, type: 3}
 --- !u!4 &221350564
 Transform:
   m_ObjectHideFlags: 0
