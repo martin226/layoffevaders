@@ -88,11 +88,18 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        Vector3 forwardMove;
+    
         if (isDead)
         {
             gameOverUI.SetActive(true);
+            forwardMove = Vector3.zero;
         }
-        Vector3 forwardMove = transform.forward * speed * Time.fixedDeltaTime;
+        else
+        {
+            forwardMove = transform.forward * speed * Time.fixedDeltaTime;
+        }
+        
         rb.MovePosition(rb.position + forwardMove);
     }
 
