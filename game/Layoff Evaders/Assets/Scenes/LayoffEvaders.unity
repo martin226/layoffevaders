@@ -1898,7 +1898,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 949177141}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: mainMenu
+        m_MethodName: MainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2351,7 +2351,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 949177141}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

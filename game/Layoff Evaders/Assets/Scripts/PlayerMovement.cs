@@ -257,6 +257,16 @@ public class PlayerMovement : MonoBehaviour
     {
         stateText.gameObject.SetActive(false);
     }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log("RESTART!");
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+        Debug.Log("MAIN MENU!");
+    }
     public void QuitGame()
     {
         Application.Quit();
