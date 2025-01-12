@@ -1,13 +1,11 @@
-import pandas as pd
-import numpy as np
-import pytz
 import streamlit as st
-import plotly.graph_objects as go
-from datetime import date, datetime, timedelta
-from streamlit_extras.app_logo import add_logo
-from utils import logo
+import cohere
+import pytz
+from secret import API_KEY
 from firebase_manager import FirebaseManager
 from time import sleep
+from datetime import datetime
+from utils import logo, generate_heat_map, generate_activity_count_graph, generate_calories_burn_graph, generate_calories_burnt, generate_exercise_counts, generate_session_graph, generate_session_length_graph, generate_sessions
 
 
 # Sidebar operations
@@ -33,7 +31,8 @@ logo()
 # init database
 
 currentUser = "user1"
-a = st.empty()
+
+
 def parse_data(unparsed_data):
 
     game_keys = unparsed_data[currentUser]["games"].keys()
@@ -44,6 +43,7 @@ def parse_data(unparsed_data):
         unparsed_data[currentUser]["games"][nxt_game]["startTime"] = est_startTime
         unparsed_data[currentUser]["games"][nxt_game]["endTime"] = est_endTime
     return unparsed_data
+
 
 def callback(d):
     global c
@@ -57,6 +57,18 @@ def callback(d):
 if st.session_state == {}:
 
     st.session_state["Database"] = FirebaseManager()
+    st.session_state["Cohere"] = cohere.ClientV2(API_KEY)
+    st.session_state["Message"] = [
+        {
+            "Name": "ai",
+            "Message": [(
+                "Welcome to Layoff Evaders AI! 👋👋👋 Here is a list of commands to get you started \n\n"
+                " → What is my total jump count?\n\n"
+                " → What does my exercise heatmap look like?\n\n"
+                " → Show me the chart for calories burned"
+            )]
+        }
+    ]
 
 st.session_state["Data"] = parse_data(st.session_state["Database"].get_user_data())
 
@@ -66,110 +78,40 @@ data = st.session_state["Data"]
 st.title("Dashboard")
 #st.markdown("#####") # adds vertical spacing
 
-def calories_burnt(jumps, squats, lats):
-
-    squat_MET = 3
-    jump_MET = 4
-    lat_MET = 2
-
-    return round(squat_MET * 1/3600 * squats + jump_MET * 1/3600 * jumps + lat_MET * 1/3600 * lats * 60, 1)
-
-# calories burnt = MET x weight (kg) x duration (hours)
-# assumption: one action is 1 second -> 1/3600 hours
-# assumption: person weighs 60kg
-caloriesBurnt = calories_burnt(data[currentUser]["jumpCount"], data[currentUser]["squatCount"], data[currentUser]["lateralRaiseCount"])
-
-latest_game = data[currentUser]["games"][max(data[currentUser]["games"].keys())]
-caloriesBurntLatestGame = calories_burnt(latest_game["jumpCount"], latest_game["squatCount"], latest_game["lateralRaiseCount"])
-
 # total calories burnt
 st.write("##### User Total Metrics")
-st.metric(label="Total Calories Burnt", value=caloriesBurnt, delta=caloriesBurntLatestGame, delta_color="normal", border=True)
 
-totalJumps, totalLateralRaises, totalSquats = st.columns(spec=3, gap="small", vertical_alignment="center", border=True)
+latest_game = data[currentUser]["games"][max(data[currentUser]["games"].keys())]
+generate_calories_burnt(
+    st,
+    data[currentUser]["jumpCount"],
+    data[currentUser]["squatCount"],
+    data[currentUser]["lateralRaiseCount"],
+    latest_game["jumpCount"],
+    latest_game["squatCount"],
+    latest_game["lateralRaiseCount"]
+)
 
-# total count of each action
-totalJumps.metric(label="Jump Count", value=data[currentUser]["jumpCount"], delta=latest_game["jumpCount"], delta_color="normal")
-totalLateralRaises.metric(label="Lateral Raise Count", value=data[currentUser]["lateralRaiseCount"], delta=latest_game["lateralRaiseCount"], delta_color="normal")
-totalSquats.metric(label="Squat Count", value=data[currentUser]["squatCount"], delta=latest_game["squatCount"], delta_color="normal")
 
 st.write("##### Recent Sessions")
+generate_exercise_counts(
+    st,
+    data[currentUser]["jumpCount"],
+    data[currentUser]["squatCount"],
+    data[currentUser]["lateralRaiseCount"],
+    latest_game["jumpCount"],
+    latest_game["squatCount"],
+    latest_game["lateralRaiseCount"]
+)
 
-class Session:
 
-    def __init__(self, timeStart, timeEnd, jumps, squats, lateralRaises):
-
-        self.timeStart = timeStart
-        self.timeEnd = timeEnd
-        self.jumps = jumps
-        self.squats = squats
-        self.lateralRaises = lateralRaises
-    
-    def get_calorie_count(self):
-
-        return calories_burnt(self.jumps, self.squats, self.lateralRaises)
-
-    def get_length(self):
-
-        return round((self.timeEnd - self.timeStart).total_seconds() / 60)
-
-# algorithm to divide into sessions
-sessions = []
-current_session = None
-sorted_key_set = sorted(data[currentUser]["games"].keys())
-for next_key in sorted_key_set:
-
-    next_game = data[currentUser]["games"][next_key]
-
-    if current_session is None:
-        
-        current_session = Session(
-            next_game["startTime"],
-            next_game["endTime"],
-            next_game["jumpCount"],
-            next_game["squatCount"],
-            next_game["lateralRaiseCount"]
-        )
-
-    elif (next_game["startTime"] - current_session.timeEnd).total_seconds() / 60 <= 60:# add to current session
-        current_session.jumps += next_game["jumpCount"]
-        current_session.squats += next_game["squatCount"]
-        current_session.lateralRaises += next_game["lateralRaiseCount"]
-        current_session.timeEnd = next_game["endTime"]
-    
-    else: # create a new session
-        sessions.append(current_session)
-        current_session = Session(
-            next_game["startTime"],
-            next_game["endTime"],
-            next_game["jumpCount"],
-            next_game["squatCount"],
-            next_game["lateralRaiseCount"]
-        )
-
-if current_session is not None:
-    sessions.append(current_session)
-
+sessions = generate_sessions(data[currentUser]["games"])
+generate_session_graph(st, sessions)
 session_count = min(len(sessions), 10)
-session_container = st.container(height=225, border=True)
-
-for i in range(session_count):
-
-    s = sessions[-i]
-    container = session_container.container(border=True)
-    c1, c2, c3, c4, c5, c6 = container.columns(spec=[2, 1, 1, 1, 1, 1], gap="small")
-
-    length = s.get_length()
-
-    c1.write(s.timeStart)
-    c2.markdown(f"⌛ **{length}** min")
-    c3.markdown(f"Jumps: **{s.jumps}**")
-    c4.markdown(f"Squats: **{s.squats}**")
-    c5.markdown(f"Lats: **{s.lateralRaises}**")
-    c6.markdown(f"🔥 **{s.get_calorie_count()}** Cals")
 
 # create session graphs
 st.markdown("##### Session Statistics")
+
 chartDisplay = st.selectbox(
     label="no label",
     label_visibility="collapsed",
@@ -177,79 +119,27 @@ chartDisplay = st.selectbox(
     index=0,
 )
 
-recent_sessions = sessions[-session_count:]
+
 if chartDisplay == "Session Length":
 
-    df = pd.DataFrame({
-        "Session Start": [s.timeStart for s in recent_sessions],
-        "Session Length": [s.get_length() for s in recent_sessions]
-    }).set_index("Session Start")
-    st.line_chart(df, height=350)
+    generate_session_length_graph(st, sessions)
 
 elif chartDisplay == "Activity Count":
 
-    df = pd.DataFrame({
-        "Session Start": [s.timeStart for s in recent_sessions],
-        "Session Jumps": [s.jumps for s in recent_sessions],
-        "Session Squats": [s.squats for s in recent_sessions],
-        #"Session Lateral Raises": [s.lateralRaises for s in recent_sessions]
-    }).set_index("Session Start")
-    st.bar_chart(df, height=350, stack=True)
+    generate_activity_count_graph(st, sessions)
 
 elif chartDisplay == "Calories Burned":
 
-    df = pd.DataFrame({
-        "Session Start": [s.timeStart for s in recent_sessions],
-        "Calories Burned": [s.get_calorie_count() for s in recent_sessions]
-    }).set_index("Session Start")
-    st.line_chart(df, height=350)
+    generate_calories_burn_graph(st, sessions)
 
 
 # implement Github-like heat map
 st.markdown("##### Heatmap")
 
-# find number of games played on each day
-heatmap_counts = dict()
-game_keys = data[currentUser]["games"].keys()
-for nxt_key in game_keys:
-    nxt_game = data[currentUser]["games"][nxt_key]
-    d = str(nxt_game["startTime"].date())
-    if d in heatmap_counts:
-        heatmap_counts[d] += 1
-    else:
-        heatmap_counts[d] = 1
 
-# make 52 x 7
-heatmap_values = [[] for _ in range(7)]
-for i in range(364):
-    # i days before current date
-    old_date = str((datetime.today() - timedelta(days=i)).date())
-    v = 0
-    if old_date in heatmap_counts:
-        v = heatmap_counts[old_date]
-    heatmap_values[i % 7].append(v)
+generate_heat_map(st, data[currentUser]["games"])
 
-for i in range(7):
-    heatmap_values[i] = heatmap_values[i][::-1]
 
-fig = go.Figure(
-    data = go.Heatmap(
-        z = heatmap_values,
-        hoverinfo="skip",
-        xgap=1,
-        ygap=1,
-        colorscale=[[0, 'white'], [1, 'green']]
-    ),
-    layout = {
-        'xaxis': {'visible': False, 'showticklabels': False},
-        'yaxis': {'visible': False, 'showticklabels': False},
-    },
-)
-fig.update_layout(yaxis_scaleanchor="x")
-fig.update_traces(colorbar_orientation='h', selector=dict(type='heatmap'))
-st.plotly_chart(fig)
-#st.button(label=" ", type="primary")
-#st.button(label=" ", type="secondary")
-
-sleep(2)
+# refresh page
+sleep(3)
 st.rerun()
