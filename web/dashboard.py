@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-from datetime import date, datetime
+import plotly.graph_objects as go
+from datetime import date, datetime, timedelta
 from streamlit_extras.app_logo import add_logo
 from utils import logo
 
@@ -33,22 +34,22 @@ data = {
         "squatCount": 49,
         "games": [
             {
-                "timeStart": datetime(2020, 5, 17, 14, 15, 14),
-                "timeEnd": datetime(2020, 5, 17, 14, 41, 24),
+                "timeStart": datetime(2024, 5, 17, 14, 15, 14),
+                "timeEnd": datetime(2024, 5, 17, 14, 41, 24),
                 "jumpCount": 8,
                 "lateralRaiseCount": 9,
                 "squatCount": 17
             },
             {
-                "timeStart": datetime(2020, 5, 17, 15, 7, 10),
-                "timeEnd": datetime(2020, 5, 17, 16, 4, 9),
+                "timeStart": datetime(2024, 5, 17, 15, 7, 10),
+                "timeEnd": datetime(2024, 5, 17, 16, 4, 9),
                 "jumpCount": 15,
                 "lateralRaiseCount": 7,
                 "squatCount": 11
             },
             {
-                "timeStart": datetime(2020, 5, 21, 13, 44, 3),
-                "timeEnd": datetime(2020, 5, 21, 14, 15, 3),
+                "timeStart": datetime(2024, 5, 21, 13, 44, 3),
+                "timeEnd": datetime(2024, 5, 21, 14, 15, 3),
                 "jumpCount": 9,
                 "lateralRaiseCount": 15,
                 "squatCount": 21
@@ -196,3 +197,45 @@ elif chartDisplay == "Calories Burned":
         "Calories Burned": [s.get_calorie_count() for s in recent_sessions]
     }).set_index("Session Start")
     st.line_chart(df, height=350)
+
+
+# implement Github-like heat map
+st.markdown("##### Heatmap")
+
+# find number of games played on each day
+heatmap_counts = dict()
+for nxt_game in data[currentUser]["games"]:
+    d = str(nxt_game["timeStart"].date())
+    if d in heatmap_counts:
+        heatmap_counts[d] += 1
+    else:
+        heatmap_counts[d] = 1
+
+# make 52 x 7
+heatmap_values = [[] for _ in range(7)]
+for i in range(364):
+    # i days before current date
+    old_date = str((datetime.today() - timedelta(days=i)).date())
+    v = 0
+    if old_date in heatmap_counts:
+        v = heatmap_counts[old_date]
+    heatmap_values[i % 7].append(v)
+
+fig = go.Figure(
+    data = go.Heatmap(
+        z = heatmap_values,
+        hoverinfo="skip",
+        xgap=1,
+        ygap=1,
+        colorscale='Greens'
+    ),
+    layout = {
+        'xaxis': {'visible': False, 'showticklabels': False},
+        'yaxis': {'visible': False, 'showticklabels': False},
+    },
+)
+fig.update_layout(yaxis_scaleanchor="x")
+fig.update_traces(colorbar_orientation='h', selector=dict(type='heatmap'))
+st.plotly_chart(fig)
+#st.button(label=" ", type="primary")
+#st.button(label=" ", type="secondary")

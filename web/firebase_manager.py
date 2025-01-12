@@ -46,4 +46,3 @@ class FirebaseManager:
         self.thread = threading.Thread(target=run, daemon=True)
         self.thread.start()
         
-
