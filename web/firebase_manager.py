@@ -35,7 +35,7 @@ class FirebaseManager:
         def wrapper(event):
             data = self.get_user_data()
             
-            print(data)
+            #print(data)
             callback(data)
             
         def run():

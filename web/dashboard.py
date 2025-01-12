@@ -7,6 +7,7 @@ from datetime import date, datetime, timedelta
 from streamlit_extras.app_logo import add_logo
 from utils import logo
 from firebase_manager import FirebaseManager
+from time import sleep
 
 
 # Sidebar operations
@@ -32,7 +33,7 @@ logo()
 # init database
 
 currentUser = "user1"
-
+a = st.empty()
 def parse_data(unparsed_data):
 
     game_keys = unparsed_data[currentUser]["games"].keys()
@@ -45,17 +46,19 @@ def parse_data(unparsed_data):
     return unparsed_data
 
 def callback(d):
-
+    global c
     st.session_state["Data"] = parse_data(d)
+    print(st.session_state["Data"]["user1"]["lateralRaiseCount"])
+    #st.cache_data.clear()
+    st.rerun()
+    #st.write(st.session_state["Data"]["user1"]["lateralRaiseCount"])
 
 
 if st.session_state == {}:
 
     st.session_state["Database"] = FirebaseManager()
-    st.session_state["Data"] = parse_data(st.session_state["Database"].get_user_data())
-    st.session_state["Database"].listen(
-        callback
-    )
+
+st.session_state["Data"] = parse_data(st.session_state["Database"].get_user_data())
 
 data = st.session_state["Data"]
 
@@ -247,3 +250,6 @@ fig.update_traces(colorbar_orientation='h', selector=dict(type='heatmap'))
 st.plotly_chart(fig)
 #st.button(label=" ", type="primary")
 #st.button(label=" ", type="secondary")
+
+sleep(2)
+st.rerun()
