@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     public TextMeshProUGUI stateText;
     public float sprintSpeedMultiplier = 1.5f;
     private float baseSpeed;
-    bool isDead = false;
     bool isGrounded = true;
     public float speed = 5.0f;
     public Rigidbody rb;
@@ -28,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     int currentLane = 1;
     readonly float laneDistance = 4.0f;
     [SerializeField] GameObject playerAnim;
-    public GameObject gameOverUI;
+    public GameObject jumpToStart;
     private DatabaseReference reference;
     private int squatCount = 0;
     private int jumpCount = 0;
@@ -45,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isLeftRaising = false;
     private bool isRightRaising = false;
     [SerializeField] private TextMeshProUGUI sprintTimerText;
+    private bool started = false;
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void SwitchLaneLeft()
     {
-        if (currentLane > 0 & !isDead)
+        if (currentLane > 0 & started)
         {
             currentLane--;
             Vector3 newPos = transform.position;
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
     void SwitchLaneRight()
     {
-        if (currentLane < 2 & !isDead)
+        if (currentLane < 2 & started)
         {
             currentLane++;
             Vector3 newPos = transform.position;
@@ -120,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if (!isGrounded || isDead)
+        if (!isGrounded)
         {
             return;
         }
@@ -141,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Roll()
     {
-        if (!isGrounded|| isDead)
+        if (!isGrounded|| !started)
         {
             return;
         }
@@ -167,25 +167,16 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!started) return;
         Vector3 forwardMove;
-    
-        if (isDead)
-        {
-            gameOverUI.SetActive(true);
-            forwardMove = Vector3.zero;
-        }
-        else
-        {
-            forwardMove = transform.forward * speed * Time.fixedDeltaTime;
-        }
-        
+        forwardMove = transform.forward * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + forwardMove);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isDead)
+        if (started)
         {
             timer -= Time.deltaTime;
             
@@ -239,6 +230,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (yChange > 0.1f && !isJumping) // Adjust threshold for jump detection
             {
+                if (!started) {
+                    jumpToStart.SetActive(false);
+                    started = true;
+                }
                 isJumping = true; // Mark as jumping
                 Jump();
             }
@@ -286,7 +281,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
-        isDead = true;
         playerAnim.GetComponent<Animator>().Play("Stumble Backwards");
         Debug.Log("Player died");
         // add game to games array
@@ -299,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
             "\"jumpCount\":" + jumpCount + "," +
             "\"lateralRaiseCount\":" + lateralRaiseCount + "}"
         );
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void StartSprintPhase()
