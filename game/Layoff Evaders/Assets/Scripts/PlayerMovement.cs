@@ -1,9 +1,20 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
+    //for the hiit stuff
+    private float initialDelay = 30f;
+    private float sprintDuration = 30f;
+    private float restDuration = 120f;
+    private float timer;
+    private bool isFirstCycle = true;
+    private bool isSprinting = false;
+    public TextMeshProUGUI stateText;
+    public float sprintSpeedMultiplier = 2f;
+    private float baseSpeed;
+    
     bool isDead = false;
     bool isGrounded = true;
     public float speed = 5.0f;
@@ -13,9 +24,12 @@ public class PlayerMovement : MonoBehaviour
     readonly float laneDistance = 4.0f;
     [SerializeField] GameObject playerAnim;
     public GameObject gameOverUI;
+    
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        baseSpeed = speed;
+        timer = initialDelay;
     }
     void SwitchLaneLeft()
     {
@@ -106,6 +120,27 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isDead)
+        {
+            timer -= Time.deltaTime;
+            
+            if (timer <= 0)
+            {
+                if (isFirstCycle)
+                {
+                    StartSprintPhase();
+                    isFirstCycle = false;
+                }
+                else if (isSprinting)
+                {
+                    StartRestPhase();
+                }
+                else
+                {
+                    StartSprintPhase();
+                }
+            }
+        }
         if (Input.GetKeyDown(KeyCode.A))
         {
             SwitchLaneLeft();
@@ -122,6 +157,30 @@ public class PlayerMovement : MonoBehaviour
         {
             Roll();
         }
+    }
+    void StartSprintPhase()
+    {
+        isSprinting = true;
+        timer = sprintDuration;
+        speed = baseSpeed * sprintSpeedMultiplier;
+        stateText.text = "SPRINT!";
+        stateText.gameObject.SetActive(true);
+        Invoke("HideText", 3f);
+    }
+
+    void StartRestPhase()
+    {
+        isSprinting = false;
+        timer = restDuration;
+        speed = baseSpeed;
+        stateText.text = "REST";
+        stateText.gameObject.SetActive(true);
+        Invoke("HideText", 3f);
+    }
+
+    void HideText()
+    {
+        stateText.gameObject.SetActive(false);
     }
 
     public void Die()
