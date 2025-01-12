@@ -77,9 +77,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Roll()
     {
-        if (!isGrounded|| isDead)
+        if (!isGrounded || isDead)
         {
-            gameOverUI.SetActive(true);
+            return;
         }
         audioManager.PlaySFX(audioManager.action);
         playerAnim.GetComponent<Animator>().SetBool("isRolling", true); // Play the roll animation
