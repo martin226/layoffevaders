@@ -1,0 +1,6 @@
+streamlit
+pandas
+streamlit-extras
+firebase-admin
+plotly.graph_objects
+cohere
