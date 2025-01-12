@@ -15,7 +15,7 @@ firebase_admin.initialize_app(cred, options={
 class FirebaseManager:
     def __init__(self, user="user1"):
         self.user = user
-        self.threads = []
+        self.thread = None
         self.stop_event = threading.Event()
                 
     def get_user_data(self):
@@ -25,20 +25,25 @@ class FirebaseManager:
         
     def close(self):
         """Close the Firebase manager."""
-        if self.stop_event and self.threads:
+        if self.stop_event and self.thread:
             self.stop_event.set()
-            for thread in self.threads:
-                thread.join()
+            self.thread.join()
     
     def listen(self, path: str, callback: Callable):
         """Listen for changes in the user's data. path should NOT start with a slash. Will give you the value of the data at the path everytime it updates, in the correct datatype."""
         ref = db.reference(f"/users/{self.user}/{path}")
         
+        def wrapper(event):
+            data = self.get_user_data()
+            
+            print(data)
+            callback(data)
+            
         def run():
             self.stop_event.clear()
-            ref.listen(lambda event: callback(event.data))
+            ref.listen(wrapper)
         
-        self.threads.append(threading.Thread(target=run, daemon=True))
-        self.threads[-1].start()
+        self.thread = threading.Thread(target=run, daemon=True)
+        self.thread.start()
         
 
