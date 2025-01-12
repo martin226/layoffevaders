@@ -1,0 +1,17 @@
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/GAToUnityCallbacks.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroEnd.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroHeaderBegin.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/MacroSourceBegin.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAApplication.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAConfiguration.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGADebug.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAEvents.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAInput.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGASoftKeyboard.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGASoftKeyboardCallbacks.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGATypes.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UGAVersion.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGACallbacks.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAConfigurationCallbacks.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAKeyEventCallbacks.h
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/UnityToGAMotionEventCallbacks.h

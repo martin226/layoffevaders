@@ -6,6 +6,7 @@ using Firebase.Extensions;
 using Unity.VisualScripting;
 using TMPro;
 using System;
+using UnityEngine.XR;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -36,6 +37,13 @@ public class PlayerMovement : MonoBehaviour
     private int initialJumpCount = 0;
     private int initialLateralRaiseCount = 0;
     private string startTime;
+    private Vector3 headsetInitialPosition;
+    private bool isHeadsetPositionSet = false;
+
+    private bool isJumping = false;
+    private bool isSquatting = false;
+    private bool isLeftRaising = false;
+    private bool isRightRaising = false;
     [SerializeField] private TextMeshProUGUI sprintTimerText;
     private void Awake()
     {
@@ -204,21 +212,75 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        TrackVRInputs();
+    }
+
+    private void TrackVRInputs()
+    {
+        // Get the position of the VR headset
+        InputDevice headDevice = InputDevices.GetDeviceAtXRNode(XRNode.Head);
+        InputDevice leftControllerDevice = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        InputDevice rightControllerDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+        if (!isHeadsetPositionSet)
         {
-            SwitchLaneLeft();
+            // Set initial headset position
+            if (headDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 initialPosition))
+            {
+                headsetInitialPosition = initialPosition;
+                isHeadsetPositionSet = true;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+
+        // Check headset Y-axis for Jump and Squat
+        if (headDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 headsetPosition))
         {
-            SwitchLaneRight();
-        } 
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            Roll();
+            float yChange = headsetPosition.y - headsetInitialPosition.y;
+
+            if (yChange > 0.1f && !isJumping) // Adjust threshold for jump detection
+            {
+                isJumping = true; // Mark as jumping
+                Jump();
+            }
+            else if (yChange <= 0.1f && isJumping) // Reset when player lands
+            {
+                isJumping = false;
+            }
+
+            else if (yChange < -0.3f && !isSquatting) // Adjust threshold for squat detection
+            {
+                isSquatting = true; // Mark as squatting
+                Roll();
+            }
+            else if (yChange >= -0.3f && isSquatting) // Reset when player stands up
+            {
+                isSquatting = false;
+            }
+
+            else if (leftControllerDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 leftControllerPosition) &&
+            rightControllerDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 rightControllerPosition)) {
+                float leftYChange = headsetPosition.y - leftControllerPosition.y; // Relative to current headset position
+                float rightYChange = headsetPosition.y - rightControllerPosition.y; // Relative to current headset position
+                if (leftYChange < 0.3f && !isLeftRaising && !isRightRaising) // Left lateral raise
+                {
+                    isLeftRaising = true; // Mark as raising
+                    SwitchLaneLeft();
+                }
+                else if (leftYChange >= 0.3f && isLeftRaising) // Reset when arm moves out of range
+                {
+                    isLeftRaising = false;
+                }
+
+                if (rightYChange < 0.3f && !isRightRaising && !isLeftRaising) // Right lateral raise
+                {
+                    isRightRaising = true; // Mark as raising
+                    SwitchLaneRight();
+                }
+                else if (rightYChange >= 0.3f && isRightRaising) // Reset when arm moves out of range
+                {
+                    isRightRaising = false;
+                }
+            }
         }
     }
 

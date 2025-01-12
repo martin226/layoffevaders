@@ -1,0 +1,5 @@
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/.utmp/RelWithDebInfo/6f2o1k22/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/.utmp/RelWithDebInfo/6f2o1k22/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/.utmp/RelWithDebInfo/6f2o1k22/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/.utmp/RelWithDebInfo/6f2o1k22/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/.utmp/RelWithDebInfo/6f2o1k22/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

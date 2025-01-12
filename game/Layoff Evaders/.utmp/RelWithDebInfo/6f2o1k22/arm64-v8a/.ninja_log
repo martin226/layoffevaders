@@ -1,0 +1,10 @@
+# ninja log v5
+2	778	1736658068916744367	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	5e28d029d4a85201
+4	787	1736658068926521333	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	997558efab1dc684
+1	794	1736658068933238797	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	e1634f4f10ea2d40
+4	803	1736658068943026471	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	470c15a121beb27e
+6	904	1736658069044178924	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	20f6b85a6a14e037
+1	929	1736658069068931818	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	45ddd7351f98d19c
+3	1037	1736658069176367110	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	fc2c68d1a9fdc209
+1	1143	1736658069282393817	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	22fbfdda3823c5bf
+1143	1222	1736658069359656376	/Users/martinsit/Documents/projects/layoffevaders/game/Layoff Evaders/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/6f2o1k22/obj/arm64-v8a/libgame.so	bc2af4f533ac3014
