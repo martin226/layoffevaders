@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
+import pytz
 import streamlit as st
 import plotly.graph_objects as go
 from datetime import date, datetime, timedelta
 from streamlit_extras.app_logo import add_logo
 from utils import logo
+from firebase_manager import FirebaseManager
 
 
 # Sidebar operations
@@ -27,38 +29,36 @@ logo()
 # - - jumpCount, lateralRaiseCount, squatCount
 # one session is 60 minutes
 
-data = {
-    "user1": {
-        "jumpCount": 32,
-        "lateralRaiseCount": 31,
-        "squatCount": 49,
-        "games": [
-            {
-                "timeStart": datetime(2024, 5, 17, 14, 15, 14),
-                "timeEnd": datetime(2024, 5, 17, 14, 41, 24),
-                "jumpCount": 8,
-                "lateralRaiseCount": 9,
-                "squatCount": 17
-            },
-            {
-                "timeStart": datetime(2024, 5, 17, 15, 7, 10),
-                "timeEnd": datetime(2024, 5, 17, 16, 4, 9),
-                "jumpCount": 15,
-                "lateralRaiseCount": 7,
-                "squatCount": 11
-            },
-            {
-                "timeStart": datetime(2024, 5, 21, 13, 44, 3),
-                "timeEnd": datetime(2024, 5, 21, 14, 15, 3),
-                "jumpCount": 9,
-                "lateralRaiseCount": 15,
-                "squatCount": 21
-            }
-        ]
-    }
-}
+# init database
 
 currentUser = "user1"
+
+def parse_data(unparsed_data):
+
+    game_keys = unparsed_data[currentUser]["games"].keys()
+    for nxt_game in game_keys:
+        est = pytz.timezone('US/Eastern')
+        est_startTime = datetime.fromisoformat(unparsed_data[currentUser]["games"][nxt_game]["startTime"]).astimezone(est)
+        est_endTime = datetime.fromisoformat(unparsed_data[currentUser]["games"][nxt_game]["endTime"]).astimezone(est)
+        unparsed_data[currentUser]["games"][nxt_game]["startTime"] = est_startTime
+        unparsed_data[currentUser]["games"][nxt_game]["endTime"] = est_endTime
+    return unparsed_data
+
+def callback(d):
+
+    st.session_state["Data"] = parse_data(d)
+
+
+if st.session_state == {}:
+
+    st.session_state["Database"] = FirebaseManager()
+    st.session_state["Data"] = parse_data(st.session_state["Database"].get_user_data())
+    st.session_state["Database"].listen(
+        callback
+    )
+
+data = st.session_state["Data"]
+
 
 st.title("Dashboard")
 #st.markdown("#####") # adds vertical spacing
@@ -76,7 +76,7 @@ def calories_burnt(jumps, squats, lats):
 # assumption: person weighs 60kg
 caloriesBurnt = calories_burnt(data[currentUser]["jumpCount"], data[currentUser]["squatCount"], data[currentUser]["lateralRaiseCount"])
 
-latest_game = data[currentUser]["games"][-1]
+latest_game = data[currentUser]["games"][max(data[currentUser]["games"].keys())]
 caloriesBurntLatestGame = calories_burnt(latest_game["jumpCount"], latest_game["squatCount"], latest_game["lateralRaiseCount"])
 
 # total calories burnt
@@ -113,29 +113,32 @@ class Session:
 # algorithm to divide into sessions
 sessions = []
 current_session = None
-for next_game in data[currentUser]["games"]:
+sorted_key_set = sorted(data[currentUser]["games"].keys())
+for next_key in sorted_key_set:
+
+    next_game = data[currentUser]["games"][next_key]
 
     if current_session is None:
         
         current_session = Session(
-            next_game["timeStart"],
-            next_game["timeEnd"],
+            next_game["startTime"],
+            next_game["endTime"],
             next_game["jumpCount"],
             next_game["squatCount"],
             next_game["lateralRaiseCount"]
         )
 
-    elif (next_game["timeStart"] - current_session.timeEnd).total_seconds() / 60 <= 60:# add to current session
+    elif (next_game["startTime"] - current_session.timeEnd).total_seconds() / 60 <= 60:# add to current session
         current_session.jumps += next_game["jumpCount"]
         current_session.squats += next_game["squatCount"]
         current_session.lateralRaises += next_game["lateralRaiseCount"]
-        current_session.timeEnd = next_game["timeEnd"]
+        current_session.timeEnd = next_game["endTime"]
     
     else: # create a new session
         sessions.append(current_session)
         current_session = Session(
-            next_game["timeStart"],
-            next_game["timeEnd"],
+            next_game["startTime"],
+            next_game["endTime"],
             next_game["jumpCount"],
             next_game["squatCount"],
             next_game["lateralRaiseCount"]
@@ -204,8 +207,10 @@ st.markdown("##### Heatmap")
 
 # find number of games played on each day
 heatmap_counts = dict()
-for nxt_game in data[currentUser]["games"]:
-    d = str(nxt_game["timeStart"].date())
+game_keys = data[currentUser]["games"].keys()
+for nxt_key in game_keys:
+    nxt_game = data[currentUser]["games"][nxt_key]
+    d = str(nxt_game["startTime"].date())
     if d in heatmap_counts:
         heatmap_counts[d] += 1
     else:
@@ -221,13 +226,16 @@ for i in range(364):
         v = heatmap_counts[old_date]
     heatmap_values[i % 7].append(v)
 
+for i in range(7):
+    heatmap_values[i] = heatmap_values[i][::-1]
+
 fig = go.Figure(
     data = go.Heatmap(
         z = heatmap_values,
         hoverinfo="skip",
         xgap=1,
         ygap=1,
-        colorscale='Greens'
+        colorscale=[[0, 'white'], [1, 'green']]
     ),
     layout = {
         'xaxis': {'visible': False, 'showticklabels': False},

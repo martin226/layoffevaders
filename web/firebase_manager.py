@@ -5,7 +5,6 @@ import threading
 import firebase_admin
 from firebase_admin import credentials, db
 
-
 # Initialize Firebase
 cred = credentials.Certificate("service-account.json")
 firebase_admin.initialize_app(cred, options={
@@ -20,7 +19,7 @@ class FirebaseManager:
                 
     def get_user_data(self):
         """Get a snapshot of the entire user's data from Firebase."""
-        ref = db.reference(f"/users/{self.user}")
+        ref = db.reference(f"/users")
         return ref.get()
         
     def close(self):
@@ -29,9 +28,9 @@ class FirebaseManager:
             self.stop_event.set()
             self.thread.join()
     
-    def listen(self, path: str, callback: Callable):
+    def listen(self, callback: Callable):
         """Listen for changes in the user's data. path should NOT start with a slash. Will give you the value of the data at the path everytime it updates, in the correct datatype."""
-        ref = db.reference(f"/users/{self.user}/{path}")
+        ref = db.reference(f"/users")
         
         def wrapper(event):
             data = self.get_user_data()
