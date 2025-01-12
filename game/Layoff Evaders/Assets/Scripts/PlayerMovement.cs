@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     private int initialJumpCount = 0;
     private int initialLateralRaiseCount = 0;
     private string startTime;
-    
+    [SerializeField] private TextMeshProUGUI sprintTimerText;
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -181,6 +181,12 @@ public class PlayerMovement : MonoBehaviour
         {
             timer -= Time.deltaTime;
             
+            int seconds = Mathf.CeilToInt(timer);
+            sprintTimerText.text = isSprinting ? 
+                $"Next Standup Meeting: {seconds}s" : 
+                $"Next Budget Cut: {seconds}s";
+            sprintTimerText.gameObject.SetActive(true);
+
             if (timer <= 0)
             {
                 if (isFirstCycle)
@@ -240,6 +246,7 @@ public class PlayerMovement : MonoBehaviour
         speed = baseSpeed * sprintSpeedMultiplier;
         stateText.text = "ANNUAL BUDGET CUT";
         stateText.gameObject.SetActive(true);
+        sprintTimerText.gameObject.SetActive(false);
         Invoke("HideText", 3f);
     }
 
