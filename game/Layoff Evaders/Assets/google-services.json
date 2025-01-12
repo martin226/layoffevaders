@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780610240035",
+    "project_id": "layoff-evaders",
+    "storage_bucket": "layoff-evaders.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780610240035:android:b77806deb0210bf764fb96",
+        "android_client_info": {
+          "package_name": "com.martinsit.layoffevaders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOTAHx4Px1Nn3IO5km5W5xaubn9SgoKHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

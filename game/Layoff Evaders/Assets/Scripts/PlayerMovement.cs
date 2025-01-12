@@ -1,7 +1,12 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Firebase.Database;
+using Firebase;
+using Firebase.Extensions;
+using Unity.VisualScripting;
 using TMPro;
+using System;
+
 public class PlayerMovement : MonoBehaviour
 {
     //for the hiit stuff
@@ -14,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     public TextMeshProUGUI stateText;
     public float sprintSpeedMultiplier = 1.5f;
     private float baseSpeed;
-    
     bool isDead = false;
     bool isGrounded = true;
     public float speed = 5.0f;
@@ -24,12 +28,61 @@ public class PlayerMovement : MonoBehaviour
     readonly float laneDistance = 4.0f;
     [SerializeField] GameObject playerAnim;
     public GameObject gameOverUI;
+    private DatabaseReference reference;
+    private int squatCount = 0;
+    private int jumpCount = 0;
+    private int lateralRaiseCount = 0;
+    private int initialSquatCount = 0;
+    private int initialJumpCount = 0;
+    private int initialLateralRaiseCount = 0;
+    private string startTime;
     
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        startTime = DateTime.UtcNow.ToString("o");
         baseSpeed = speed;
         timer = initialDelay;
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.Result == DependencyStatus.Available)
+            {
+                FirebaseApp app = FirebaseApp.DefaultInstance;
+                FirebaseDatabase database = FirebaseDatabase.GetInstance("https://layoff-evaders-default-rtdb.firebaseio.com/");
+                Debug.Log("Firebase Initialized");
+
+                // Setting "test" to 1 when connected
+                reference = database.RootReference;
+                reference.Child("users").Child("user1").Child("squatCount").GetValueAsync().ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        DataSnapshot snapshot = task.Result;
+                        initialSquatCount = int.Parse(snapshot.Value.ToString());
+                    }
+                });
+                reference.Child("users").Child("user1").Child("jumpCount").GetValueAsync().ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        DataSnapshot snapshot = task.Result;
+                        initialJumpCount = int.Parse(snapshot.Value.ToString());
+                    }
+                });
+                reference.Child("users").Child("user1").Child("lateralRaiseCount").GetValueAsync().ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        DataSnapshot snapshot = task.Result;
+                        initialLateralRaiseCount = int.Parse(snapshot.Value.ToString());
+                    }
+                });
+            }
+            else
+            {
+                Debug.LogError($"Could not resolve all Firebase dependencies: {task.Result}");
+            }
+        });
     }
     void SwitchLaneLeft()
     {
@@ -40,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
             newPos.x = (currentLane - 1) * laneDistance;
             audioManager.PlaySFX(audioManager.action);
             transform.position = newPos;
+            RecordLateralRaise();
         }
     }
 
@@ -52,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
             newPos.x = (currentLane - 1) * laneDistance;
             audioManager.PlaySFX(audioManager.action);
             transform.position = newPos;
+            RecordLateralRaise();
         }
     }
 
@@ -66,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(transform.up * 5, ForceMode.VelocityChange); // Jump
         isGrounded = false;
         Invoke("StopJumping", 1f); // Reset after 1 second
+        RecordJump();
     }
 
     void StopJumping()
@@ -77,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Roll()
     {
-        if (!isGrounded || isDead)
+        if (!isGrounded|| isDead)
         {
             return;
         }
@@ -88,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
         col.height = 2;
         isGrounded = false;
         Invoke("StopRolling", 1.167f); // Reset after 1.167 second
+        RecordSquat();
     }
 
     void StopRolling()
@@ -158,6 +215,24 @@ public class PlayerMovement : MonoBehaviour
             Roll();
         }
     }
+
+    public void Die()
+    {
+        isDead = true;
+        playerAnim.GetComponent<Animator>().Play("Stumble Backwards");
+        Debug.Log("Player died");
+        // add game to games array
+        // { score: x, startTime: y, endTime: z, squatCount: a, jumpCount: b, lateralRaiseCount: c }
+        reference.Child("users").Child("user1").Child("games").Push().SetRawJsonValueAsync(
+            "{\"score\":" + GameManager.instance.GetScore() + "," +
+            "\"startTime\":\"" + startTime + "\"," +
+            "\"endTime\":\"" + DateTime.UtcNow.ToString("o") + "\"," +
+            "\"squatCount\":" + squatCount + "," +
+            "\"jumpCount\":" + jumpCount + "," +
+            "\"lateralRaiseCount\":" + lateralRaiseCount + "}"
+        );
+    }
+
     void StartSprintPhase()
     {
         isSprinting = true;
@@ -182,25 +257,24 @@ public class PlayerMovement : MonoBehaviour
     {
         stateText.gameObject.SetActive(false);
     }
-
-    public void Die()
-    {
-        isDead = true;
-        playerAnim.GetComponent<Animator>().Play("Stumble Backwards");
-        Debug.Log("Player died");
-    }
-
-    public void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void mainMenu()
-    {
-        SceneManager.LoadScene("Main Menu");
-    }
     public void QuitGame()
     {
         Application.Quit();
         Debug.Log("QUIT!");
+    }
+    public void RecordSquat()
+    {
+        squatCount++;
+        reference.Child("users").Child("user1").Child("squatCount").SetValueAsync(initialSquatCount + squatCount);
+    }
+    public void RecordJump()
+    {
+        jumpCount++;
+        reference.Child("users").Child("user1").Child("jumpCount").SetValueAsync(initialJumpCount + jumpCount);
+    }
+    public void RecordLateralRaise()
+    {
+        lateralRaiseCount++;
+        reference.Child("users").Child("user1").Child("lateralRaiseCount").SetValueAsync(initialLateralRaiseCount + lateralRaiseCount);
     }
 }
