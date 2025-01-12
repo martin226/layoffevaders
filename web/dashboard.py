@@ -28,30 +28,30 @@ logo()
 
 data = {
     "user1": {
-        "jumpCount": 5,
-        "lateralRaiseCount": 6,
-        "squatCount": 9,
+        "jumpCount": 32,
+        "lateralRaiseCount": 31,
+        "squatCount": 49,
         "games": [
             {
-                "timeStart": datetime(2020, 5, 17),
-                "timeEnd": datetime(2020, 5, 17),
-                "jumpCount": 2,
-                "lateralRaiseCount": 4,
-                "squatCount": 3
+                "timeStart": datetime(2020, 5, 17, 14, 15, 14),
+                "timeEnd": datetime(2020, 5, 17, 14, 41, 24),
+                "jumpCount": 8,
+                "lateralRaiseCount": 9,
+                "squatCount": 17
             },
             {
-                "timeStart": datetime(2020, 5, 17),
-                "timeEnd": datetime(2020, 5, 17),
-                "jumpCount": 3,
-                "lateralRaiseCount": 2,
-                "squatCount": 6
+                "timeStart": datetime(2020, 5, 17, 15, 7, 10),
+                "timeEnd": datetime(2020, 5, 17, 16, 4, 9),
+                "jumpCount": 15,
+                "lateralRaiseCount": 7,
+                "squatCount": 11
             },
             {
-                "timeStart": datetime(2020, 6, 17),
-                "timeEnd": datetime(2020, 6, 17),
+                "timeStart": datetime(2020, 5, 21, 13, 44, 3),
+                "timeEnd": datetime(2020, 5, 21, 14, 15, 3),
                 "jumpCount": 9,
-                "lateralRaiseCount": 1,
-                "squatCount": 2
+                "lateralRaiseCount": 15,
+                "squatCount": 21
             }
         ]
     }
@@ -105,6 +105,10 @@ class Session:
 
         return calories_burnt(self.jumps, self.squats, self.lateralRaises)
 
+    def get_length(self):
+
+        return round((self.timeEnd - self.timeStart).total_seconds() / 60)
+
 # algorithm to divide into sessions
 sessions = []
 current_session = None
@@ -148,7 +152,7 @@ for i in range(session_count):
     container = session_container.container(border=True)
     c1, c2, c3, c4, c5, c6 = container.columns(spec=[2, 1, 1, 1, 1, 1], gap="small")
 
-    length = round((s.timeEnd - s.timeStart).total_seconds() / 60)
+    length = s.get_length()
 
     c1.write(s.timeStart)
     c2.markdown(f"⌛ **{length}** min")
@@ -156,3 +160,39 @@ for i in range(session_count):
     c4.markdown(f"Squats: **{s.squats}**")
     c5.markdown(f"Lats: **{s.lateralRaises}**")
     c6.markdown(f"🔥 **{s.get_calorie_count()}** Cals")
+
+# create session graphs
+st.markdown("##### Session Statistics")
+chartDisplay = st.selectbox(
+    label="no label",
+    label_visibility="collapsed",
+    options=["Session Length", "Activity Count", "Calories Burned"],
+    index=0,
+)
+
+recent_sessions = sessions[-session_count:]
+if chartDisplay == "Session Length":
+
+    df = pd.DataFrame({
+        "Session Start": [s.timeStart for s in recent_sessions],
+        "Session Length": [s.get_length() for s in recent_sessions]
+    }).set_index("Session Start")
+    st.line_chart(df, height=350)
+
+elif chartDisplay == "Activity Count":
+
+    df = pd.DataFrame({
+        "Session Start": [s.timeStart for s in recent_sessions],
+        "Session Jumps": [s.jumps for s in recent_sessions],
+        "Session Squats": [s.squats for s in recent_sessions],
+        #"Session Lateral Raises": [s.lateralRaises for s in recent_sessions]
+    }).set_index("Session Start")
+    st.bar_chart(df, height=350, stack=True)
+
+elif chartDisplay == "Calories Burned":
+
+    df = pd.DataFrame({
+        "Session Start": [s.timeStart for s in recent_sessions],
+        "Calories Burned": [s.get_calorie_count() for s in recent_sessions]
+    }).set_index("Session Start")
+    st.line_chart(df, height=350)
