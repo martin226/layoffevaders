@@ -5,14 +5,14 @@ using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     //for the hiit stuff
-    private float initialDelay = 30f;
+    private float initialDelay = 15f;
     private float sprintDuration = 30f;
     private float restDuration = 120f;
     private float timer;
     private bool isFirstCycle = true;
     private bool isSprinting = false;
     public TextMeshProUGUI stateText;
-    public float sprintSpeedMultiplier = 2f;
+    public float sprintSpeedMultiplier = 1.5f;
     private float baseSpeed;
     
     bool isDead = false;
@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
         isSprinting = true;
         timer = sprintDuration;
         speed = baseSpeed * sprintSpeedMultiplier;
-        stateText.text = "SPRINT!";
+        stateText.text = "ANNUAL BUDGET CUT";
         stateText.gameObject.SetActive(true);
         Invoke("HideText", 3f);
     }
@@ -173,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
         isSprinting = false;
         timer = restDuration;
         speed = baseSpeed;
-        stateText.text = "REST";
+        stateText.text = "INVESTORS ARE PLEASED";
         stateText.gameObject.SetActive(true);
         Invoke("HideText", 3f);
     }
